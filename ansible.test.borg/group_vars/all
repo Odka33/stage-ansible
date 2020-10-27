@@ -1,0 +1,27 @@
+# Information Local
+local_user: 'INSERT',
+local_ip: 'INSERT',
+localBackup: 'INSERT',
+
+# Information Distante
+server_to_backup:
+  - {
+      backup_name: 'INSERT',
+      remote_path: 'INSERT',
+      encrytion: 'INSERT',
+      compression: 'INSERT',
+      apachewebdir: 'INSERT',
+      mysqluser: 'INSERT',
+      mysqlpassword: 'INSERT',
+      mysqldb: 'INSERT'
+    }
+  - {
+      backup_name: 'INSERT',
+      remote_path: 'INSERT',
+      encrytion: 'INSERT',
+      compression: 'INSERT',
+      apachewebdir: 'INSERT',
+      mysqluser: 'INSERT',
+      mysqlpassword: 'INSERT',
+      mysqldb: 'INSERT'
+    }

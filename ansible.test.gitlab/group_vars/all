@@ -1,0 +1,18 @@
+user-name: 'INSERT'
+user-email: 'INSERT'
+gitlab-url: 'INSERT'
+private-token: 'INSERT'
+repository-name: 'INSERT'
+
+
+repo-to-setup:
+  - {
+      path-to-repo: 'INSERT',
+      commit: 'INSERT',
+      branch: 'INSERT'
+    }
+  - {
+      path-to-repo: 'INSERT',
+      commit: 'INSERT',
+      branch: 'INSERT'
+    }

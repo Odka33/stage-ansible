@@ -1,0 +1,14 @@
+- name: Install des pacquets.
+  apt: name={{ item }} state=latest update_cache=true
+  with_items:
+    - build-essential
+    - tmux
+    - vim
+    - htop
+    - git-core
+    - wget
+    - curl
+    - apache2-utils
+    - emacs
+    - aptitude
+    - unzip

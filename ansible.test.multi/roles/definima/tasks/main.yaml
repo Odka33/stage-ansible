@@ -1,0 +1,6 @@
+- name: Clonage du template definima
+  shell: git clone https://github.com/Odka33/STAGE-Definima_Template/
+
+- name: Déplacement de template dans le répertoire web.
+  shell: cp -a /tmp/STAGE-Definima_Template/. /home/web/{{ item.name }}/www/
+  with_items: '{{ sites_to_set_up }}'

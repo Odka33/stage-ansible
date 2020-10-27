@@ -1,0 +1,48 @@
+
+- name: Télécharger Wordpress
+  command: wget https://fr.wordpress.org/wordpress-4.9.6-fr_FR.zip -P /home/web/{{ item.name }}/www/
+  with_items: '{{ sites_to_set_up }}'
+
+- name: Dézipper wordpress
+  unarchive:
+    src: /home/web/{{ item.name }}/www/wordpress-4.9.6-fr_FR.zip
+    dest: /home/web/{{ item.name }}/www
+    remote_src: yes
+  with_items: '{{ sites_to_set_up }}'
+
+- name: Copier le contenus de wordpress dans le répertoire courant
+  command: cp -a /home/web/{{ item.name }}/www/wordpress/. /home/web/{{ item.name }}/www/
+  with_items: '{{ sites_to_set_up }}'
+
+- name: Supprimer Wordpress.zip
+  shell: "rm /home/web/{{ item.name }}/www/wordpress-4.9.6-fr_FR.zip"
+  with_items: '{{ sites_to_set_up }}'
+
+- name: Supprimer le répertoire wordpress
+  shell: "rm -R /home/web/{{ item.name }}/www/wordpress/"
+  with_items: '{{ sites_to_set_up }}'
+
+- name: Vérifiez pour wordpress
+  stat: path=/home/web/{{ item.name }}/www/wp-config.php
+  register: has_wordpress
+  with_items: '{{ sites_to_set_up }}'
+
+- name: Arranger les permissions wp-content
+  command: chmod g+w /home/web/{{ item.item.name }}/www/wp-content
+  with_items: '{{ has_wordpress.results }}'
+  when: item.stat.exists == true
+
+- name:  Etablir les permissions content/themes
+  command: chmod -R g+w /home/web/{{ item.item.name }}/www/wp-content/themes
+  with_items: '{{ has_wordpress.results }}'
+  when: item.stat.exists == true
+
+- name: Préparer les permissions wp-content/plugins
+  command: chmod -R g+w /home/web/{{ item.item.name }}/www/wp-content/plugins
+  with_items: '{{ has_wordpress.results }}'
+  when: item.stat.exists == true
+
+- name: Fixé les permissions wp-content/uploads
+  command: chmod -R g+w /home/web/{{ item.item.name }}/www/wp-content/uploads
+  with_items: '{{ has_wordpress.results }}'
+  when: item.stat.exists == true

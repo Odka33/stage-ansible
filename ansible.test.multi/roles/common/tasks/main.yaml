@@ -1,0 +1,11 @@
+---
+- name: Regroupement des scripts
+  setup:
+
+- name: Effectuer une mise à niveau sécurisé
+  apt: upgrade=safe update_cache=yes
+
+- include: hostname.yaml
+- include: tools.yaml
+- include: locale.yaml
+- include: user.yaml

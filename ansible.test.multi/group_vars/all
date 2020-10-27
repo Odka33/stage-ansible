@@ -1,0 +1,32 @@
+---
+# Serveur Timzone + Locale
+timezone: Europe/Berlin
+locale: en_US.UTF-8
+
+# Réglages général
+deploy_server_hostname: 'INSERT'
+
+server_ip: 'INSERT'
+# MySQL
+mysql_root_db_password: 'INSERT'
+
+# Sites
+sites_to_set_up:
+  - {
+      url: 'INSERT',
+      name: 'INSERT',
+      user_password: 'INSERT',
+      mysql_password: 'INSERT',
+      server_admin: 'INSERT',
+      nginx_server_name: 'INSERT',
+      https: 'INSERT'
+    }
+  - {
+      url: 'INSERT',
+      name: 'INSERT',
+      user_password: 'INSERT',
+      mysql_password: 'INSERT',
+      server_admin: 'INSERT',
+      nginx_server_name: 'INSERT',
+      https: 'INSERT'
+    }

@@ -1,0 +1,35 @@
+NameVirtualHost *:80
+
+<VirtualHost *:80>
+    ServerName {{ url }}
+    DocumentRoot /home/web/{{ name }}/dev
+    ServerAdmin {{ server_admin }}
+    ServerAlias {{ server_alias }}
+    ErrorLog /var/log/apache2/{{ name }}-error_log
+    CustomLog /var/log/apache2/{{ name }}-access_log common
+
+    <Directory	/home/web/{{ name }}/dev>
+        Options None
+        Require all granted
+    </Directory>
+
+</VirtualHost>
+
+
+<VirtualHost {{ server_ip }}:80 [{{ server_ip6 }}]:80>
+    ServerName {{ p_url }}
+    DocumentRoot /home/web/{{ name }}/www/
+    ServerAdmin {{ server_admin }}
+    ServerAlias {{ server_alias }}
+    ErrorLog /var/log/apache2/{{ name }}-error.log
+    CustomLog /var/log/apache2/{{ name }}-access.log combined
+    CustomLog /var/log/apache2/global.log vhost_combined_definima
+
+    <Directory /home/web/{{ name }}/www/>
+        Options FollowSymlinks
+        AllowOverride All
+        Require all granted
+    </Directory>
+
+
+</Virtualhost>

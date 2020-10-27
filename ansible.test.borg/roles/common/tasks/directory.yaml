@@ -1,0 +1,30 @@
+---
+- name: Création d'un répertoire de sauvegarde.
+  file:
+    path: /backup
+    state: directory
+    mode: 0755
+
+- name: Création d'un répertoire de sauvegarde.
+  file:
+    path: /backup/sql
+    state: directory
+    mode: 0750
+
+- name: Création d'un répertoire de sauvegarde.
+  file:
+    path: /backup/apache2
+    state: directory
+    mode: 0755
+
+- name: Création d'un répertoire de sauvegarde.
+  file:
+    path: /backup/apache2/conf
+    state: directory
+    mode: 0755
+
+- name: Création d'un répertoire de sauvegarde.
+  file:
+    path: /backup/apache2/www
+    state: directory
+    mode: 0755

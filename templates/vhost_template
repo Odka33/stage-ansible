@@ -1,0 +1,15 @@
+NameVirtualHost *:80
+
+<VirtualHost *:80>
+    ServerName {{ servername }}
+    DocumentRoot /home/web/{{ rootdirectory }}
+    ServerAdmin {{ serveradmin }}
+    ErrorLog /var/log/apache2/{{ servername }}-error_log
+    CustomLog /var/log/apache2/{{ servername }}-access_log common
+
+    <Directory	/home/web/{{ rootdirectory }}>
+        Options None
+        Require all granted
+    </Directory>
+
+</VirtualHost>

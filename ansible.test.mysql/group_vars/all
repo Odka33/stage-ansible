@@ -1,0 +1,18 @@
+---
+# MySQL
+mysql_root_db_password: 'INSERT'
+
+# Sites
+sites_to_set_up:
+  - {
+      name: 'INSERT',
+      database: 'INSERT',
+      username: 'INSERT',
+      mysql_password: 'INSERT'
+    }
+  - {
+      name: 'INSERT',
+      database: 'INSERT',
+      username: 'INSERT',
+      mysql_password: 'INSERT'
+    }

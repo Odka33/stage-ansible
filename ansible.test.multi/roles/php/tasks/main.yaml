@@ -1,0 +1,11 @@
+---
+- name: Installer PHP
+  apt: name={{ item }} state=latest update_cache=true
+  with_items:
+    - php-mysql
+    - php-cgi
+    - php-pdo
+    - php-gd
+    - php-xml
+    - php-zip
+    - php-soap

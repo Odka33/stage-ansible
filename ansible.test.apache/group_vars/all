@@ -1,0 +1,11 @@
+<<<<<<< HEAD
+server_ip: 'INSERT'
+server_ip6: 'INSERT'
+
+url: 'INSERT'
+name: 'INSERT'
+server_admin: 'INSERT'
+user_password: 'INSERT'
+server_alias: 'INSERT'
+https: false
+p_url: 'INSERT'

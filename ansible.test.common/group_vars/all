@@ -1,0 +1,7 @@
+---
+# Serveur Timzone + Locale
+timezone: Europe/Berlin
+locale: en_US.UTF-8
+
+# Serveur Hostname
+deploy_server_hostname: 'INSERT'

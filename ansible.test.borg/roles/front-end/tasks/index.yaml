@@ -1,0 +1,5 @@
+- name: Sauvegarder les configuration Apache
+  shell: cp -R /etc/apache2/sites-enabled/* /backup/front-end/conf/
+
+- name: Sauvegarder le répertoire de l'application
+  shell: cp -R {{ apachewebdir }}/* /backup/front-end/www/

@@ -1,0 +1,13 @@
+- name: Install Definima Template
+  hosts: [vps-ovh]
+  remote_user: root
+  pre_tasks:
+    - name: apt-get update
+      raw: apt-get update -qq
+  roles:
+    - common
+    - mysql
+    - php
+    - vhosts
+    - apache2
+    - definima

@@ -1,0 +1,55 @@
+---
+- name: Installation apache2 et dépendance
+  apt: name={{ item }} state=latest update_cache=true
+  with_items:
+    - apache2
+    - libapache2-mod-php
+
+- name: Activation du module php-7
+  command: a2enmod php7.0
+
+- name: Activation du module php-cgi
+  command: a2enmod cgi
+
+- name: Copier les configurations apache2 ( sans https )
+  template: src=../templates/vhost_template_s dest=/etc/apache2/sites-available/{{ item.url }}.conf owner=root group=root
+  with_items: '{{ sites_to_set_up }}'
+  when: item.https != 'true'
+
+- name: a2ensite {{ rootdirectory }}.conf
+  command: a2ensite {{ item.url }}.conf
+  args:
+    creates: /etc/apache2/sites-enabled/{{ item.url }}.conf
+  with_items: '{{ sites_to_set_up }}'
+
+- name: Désactiver le site apache par défaut ( activé )
+  file:
+    path: "/etc/apache2/sites-available/000-default.conf"
+    state: absent
+
+- name: Désactiver l'option ssl par défaut ( activé )
+  file:
+    path: "/etc/apache2/sites-available/000-default-ssl"
+    state: absent
+
+- name: Supprimer le site apache2 par défaut (enabled)
+  file:
+    path: "/etc/apache2/sites-enabled/000-default.conf"
+    state: absent
+
+- name: Supprimer l'option ssl par défaut
+  file:
+    path: "/etc/apache2/sites-enabled/000-default-ssl"
+    state: absent
+
+- name: Relancer le service apache2
+  service:
+    name: apache2
+    state: reloaded
+
+- name: S'assurer que apache2 est en fonctionnement.
+  action: service name=apache2 state=started
+
+- name: Activation d'Apache vhost
+  shell: "echo '{{ server_ip }} {{ item.url }}' >> /etc/hosts"
+  with_items: '{{ sites_to_set_up }}'

@@ -1,0 +1,11 @@
+- name: Install apache2 Conf
+  hosts: [vps-ovh]
+  remote_user: elie
+  pre_tasks:
+    - name: Mise à jour de la machine
+      raw: apt-get update -qq
+      become: true
+
+  roles:
+    - apache2
+    - vhosts

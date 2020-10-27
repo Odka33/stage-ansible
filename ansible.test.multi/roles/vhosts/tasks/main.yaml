@@ -1,0 +1,35 @@
+- name: Ajouter des utilisateurs pour chaque site
+  action: user name={{ item.name }} home=/home/web/{{ item.name }} shell=/usr/sbin/nologin password={{ item.user_password|password_hash('sha512') }}
+  with_items: '{{ sites_to_set_up }}'
+
+- name: Ajouter un utilisateur à sshd_config
+  blockinfile:
+    path: /etc/ssh/sshd_config
+    block: |
+      Match User {{ item.name }}
+        ChrootDirectory /home/web/{{ item.name }}
+        X11Forwarding no
+        AllowTcpForwarding no
+        ForceCommand internal-sftp
+    marker: "# {mark} ANSIBLE MANAGED BLOCK {{ item.name }}"
+  with_items: '{{ sites_to_set_up }}'
+
+- name: Créez un répertoire www pour chaque site et définissez www-data comme groupe par défaut
+  file: path=/home/web/{{ item.name }}/www state=directory owner={{ item.name }} group=www-data mode=g+s
+  with_items: '{{ sites_to_set_up }}'
+
+- name: Définir les droits du répertoire
+  command: find /home/web/{{ item.name }}/www/ -type d -exec chmod 755 {} \;
+  with_items: '{{ sites_to_set_up }}'
+
+- name: Définir les droits de fichiers
+  command: find /home/web/{{ item.name }}/www/ -type f -exec chmod 644 {} \;
+  with_items: '{{ sites_to_set_up }}'
+
+- name: Définir l'utilisateur et le groupe
+  command: chown -R {{ item.name }}:www-data /home/web/{{ item.name }}/www
+  with_items: '{{ sites_to_set_up }}'
+
+- name: Définir setgid
+  command: find /home/web/{{ item.name }}/www/ -type d -exec chmod g+s {} \;
+  with_items: '{{ sites_to_set_up }}'

@@ -1,0 +1,8 @@
+- name: Configure gitlab
+  hosts: [vps-ovh]
+  remote_user: root
+  pre_tasks:
+    - name: apt-get update
+      raw: apt-get update -qq
+  roles:
+    - gitlab

@@ -1,0 +1,10 @@
+- name: Install Borg Backup
+  hosts: [vps-ovh]
+  remote_user: root
+  pre_tasks:
+    - name: apt-get update
+      raw: apt-get update -qq
+  roles:
+    - common
+    - front-end
+    - back-end

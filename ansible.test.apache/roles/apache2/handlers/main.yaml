@@ -1,0 +1,4 @@
+- name: Relancer le service apache2.
+  service:
+    name: apache2
+    state: reloaded

@@ -1,0 +1,2 @@
+- name: Modifier hostname
+  hostname: name={{ deploy_server_hostname }}

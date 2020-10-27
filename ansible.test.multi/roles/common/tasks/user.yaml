@@ -1,0 +1,5 @@
+- name: Create un utilisateur web
+  user:
+    name: web
+    password: "password"
+    group: root

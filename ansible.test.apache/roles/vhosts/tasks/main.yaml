@@ -1,0 +1,47 @@
+- name: Ajouter des utilisateurs pour chaque site
+  action: user name={{ name }} home=/home/web/{{ name }} shell=/usr/sbin/nologin password={{ user_password|password_hash('sha512') }}
+  become: true
+
+- name: Ajouter un utilisateur à sshd_config
+  blockinfile:
+    path: /etc/ssh/sshd_config
+    block: |
+      Match User {{ name }}
+        ChrootDirectory /home/web/{{ name }}
+        X11Forwarding no
+        AllowTcpForwarding no
+        ForceCommand internal-sftp
+    marker: "# {mark} ANSIBLE MANAGED BLOCK {{ name }}"
+  become: true
+
+- name: Créez un répertoire www pour chaque site et définissez www-data comme groupe par défaut
+  file: path=/home/web/{{ name }}/www state=directory owner={{ name }} group=www-data mode=g+s
+  become: true
+
+- name: Créez un répertoire prod pour chaque site et définissez www-data comme groupe par défaut
+  file: path=/home/web/{{ name }}/dev state=directory owner={{ name }} group=www-data mode=g+s
+  become: true
+
+- name: Définir les droits du répertoire
+  command: find /home/web/{{ name }}/www/ -type d -exec chmod 755 {} \;
+  become: true
+
+- name: Définir les droits de fichiers
+  command: find /home/web/{{ name }}/www/ -type f -exec chmod 644 {} \;
+  become: true
+
+- name: Définir l'utilisateur et le groupe
+  command: chown -R {{ name }}:www-data /home/web/{{ name }}/www
+  become: true
+
+- name: Définir setgid
+  command: find /home/web/{{ name }}/www/ -type d -exec chmod g+s {} \;
+  become: true
+
+- name: Activation d'Apache vhost
+  shell: "echo '{{ server_ip }} {{ url }}' >> /etc/hosts"
+  become: true
+
+- name: Activation d'Apache vhost
+  shell: "echo '{{ server_ip }} {{ p_url }}' >> /etc/hosts"
+  become: true

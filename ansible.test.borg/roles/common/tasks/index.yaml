@@ -1,0 +1,7 @@
+---
+- name: Regroupement des scripts
+  setup:
+
+- include: locale.yaml
+- include: ssh.yaml
+- include: directory.yaml

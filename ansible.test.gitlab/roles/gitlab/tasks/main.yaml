@@ -1,0 +1,33 @@
+---
+- name: Configuration global "user-name"
+  shell: git config --global user.name "{{ user-name }}"
+
+- name: Configuration global "user-email"
+  shell: git config --global user.email "{{ user-email }}"
+
+- name: Crée un référentiel git via APIV4
+  shell: curl --header "PRIVATE-TOKEN: {{ private-token }}" -X POST "https://gitlab.com/api/v4/projects?name={{ repository-name }}"
+
+- name: Initialiser le répertoire git
+  shell: cd {{ path-to-repo }} && git init
+  with_items: '{{ repo-to-setup }}'
+
+- name: Liée le référentiel local au référentiel en ligne
+  shell: cd {{ path-to-repo }} git remote add origin {{ ssh-key }}/{{ repository-name }}
+  with_items: '{{ repo-to-setup }}'
+
+- name: Charger les fichier au référentiel en ligne
+  shell: cd {{ path-to-repo }} && git add .
+  with_items: '{{ repo-to-setup }}'
+
+- name: Création d'un branche 'dev'
+  shell: cd {{ path-to-repo }} && git checkout -b {{ branch }}
+  with_items: '{{ repo-to-setup }}'
+
+- name: Documenter le changement
+  shell: cd {{ path-to-repo }} && git commit -m "{{ commit }}"
+  with_items: '{{ repo-to-setup }}'
+
+- name: Comfirmer et envoyer les changement au référentiel en ligne
+  shell: cd {{ path-to-repo }} && git push origin {{ branch }}
+  with_items: '{{ repo-to-setup }}'

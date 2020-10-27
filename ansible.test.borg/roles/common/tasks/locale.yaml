@@ -1,0 +1,15 @@
+---
+- name: Install des pacquets.
+  apt: name=borgbackup state=latest update_cache=true
+
+- name: create a backup dir.
+  local_action:
+    file:
+      path: {{ localBackup }}
+      owner: root
+      group: root
+      mode: 750
+
+- name: Initialisation d'un référentiel borg
+  local_action:
+    shell: borg init --encryption=repokey-blake2 {{ localBackup }}

@@ -1,0 +1,43 @@
+---
+- name: Installation apache2 et dépendance
+  apt: name={{ item }} state=latest update_cache=true
+  with_items:
+    - apache2
+    - libapache2-mod-php
+  become: true
+
+- name: Activation du module php-7
+  command: a2enmod php7.0
+  become: true
+
+- name: Activation du module php-cgi
+  command: a2enmod cgi
+  become: true
+
+- name: Copier les configurations apache2 (dev)
+  template: src=../templates/vhost_template dest=/etc/apache2/sites-available/{{ name }}.conf owner=root group=root
+  become: true
+
+- name: a2ensite {{ rootdirectory }}.conf
+  command: a2ensite {{ name }}.conf
+  args:
+    creates: /etc/apache2/sites-enabled/{{ name }}.conf
+  become: true
+
+- name: Relancer le service apache2
+  service:
+    name: apache2
+    state: reloaded
+  become: true
+
+- name: S'assurer que apache2 est en fonctionnement.
+  action: service name=apache2 state=started
+  become: true
+
+- name: Activation d'Apache vhost (dev)
+  shell: "echo '{{ server_ip }} {{ url }}.net' >> /etc/hosts"
+  become: true
+
+- name: Activation d'Apache vhost (prod)
+  shell: "echo '{{ server_ip }} {{ p_url }}.com' >> /etc/hosts"
+  become: true

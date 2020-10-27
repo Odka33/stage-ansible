@@ -1,0 +1,2 @@
+- name: Sauvegarder une base mysql
+  shell: mysqldump -u {{ mysqluser }} -p {{ mysqlpassword }} {{ mysqldb }} > /backup/back-end/base.sql

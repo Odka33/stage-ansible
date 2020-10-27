@@ -1,0 +1,2 @@
+- name: Create the backup
+  shell: borg create {{ local_user }}@{{ local_ip }}:{{ localBackup }}:{hostname}-{user}-{now} -C lzma,8 /backup/

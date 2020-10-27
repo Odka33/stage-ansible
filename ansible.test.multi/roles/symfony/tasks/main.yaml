@@ -1,0 +1,30 @@
+- name: Télécharger Composer.
+  shell: php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
+
+- name: Vérification du hash.
+  shell: php -r "if (hash_file('SHA384', 'composer-setup.php') === '544e09ee996cdf60ece3804abc52599c22b1f40f4323403c44d44fdfdd586475ca9813a858088ffbc1f233e9b180f061') { echo 'Installer verified'; } else { echo 'Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;"
+
+- name: Configuration de composer.
+  shell: php composer-setup.php
+
+- name: Dépot d'un fichier composer.phar.
+  shell: php -r "unlink('composer-setup.php');"
+
+- name: Déplacement de composer.phar afin de pouvoir l'exécuter comme un binaire.
+  shell: mv /root/composer.phar /usr/local/bin/composer
+
+- name: install symfony.
+  shell: composer create-project -n -d /home/web/{{ item.name }}/www symfony/framework-standard-edition . "3.4.*"
+  with_items: '{{ sites_to_set_up }}'
+
+- name: Changement des droit sur le répertoire var
+  command: chmod 777 -R /home/web/{{ item.name }}/www/var/
+  with_items: '{{ sites_to_set_up }}'
+
+- name: Supression du cache et des logs.
+  shell: rm -rf /home/web/{{ item.name }}/www/var/cache/* | rm -rf /home/web/{{ item.name }}/www/var/logs/*
+  with_items: '{{ sites_to_set_up }}'
+
+- name: Paramétrage du app_dev.php
+  shell: sed -i -r 's/.*127.0.0.1.*/    || !(in_array(@$_SERVER['REMOTE_ADDR'], ["127.0.0.1", "{{ server_ip }}"], true) || PHP_SAPI === 'cli-server')/g' /home/web/{{ item.name }}/www/web/app_dev.php
+  with_items: '{{ sites_to_set_up }}'
